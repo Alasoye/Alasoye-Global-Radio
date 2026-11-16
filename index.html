@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080808"><link rel="manifest" href="manifest.json">
+<title>Alasoye Global Radio</title><link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="brand-mark">AGR</div><div><h1>ALASOYE <span>GLOBAL RADIO</span></h1><p>YOUR SOUND. YOUR WORLD.</p></div></header>
+<main>
+<section class="hero"><p class="eyebrow">LIVE • MUSIC • STORIES</p><h2>Your radio, <em>everywhere.</em></h2><p>Non-stop music and recorded programmes, curated by Alasoye.</p><button id="installBtn" class="outline" hidden>Install app</button></section>
+<nav><button class="tab active" data-tab="music">Music</button><button class="tab" data-tab="shows">Recorded shows</button><button class="tab" data-tab="admin">Admin</button></nav>
+<section id="music" class="panel"><div class="section-head"><div><p class="eyebrow">24-HOUR MUSIC SERVICE</p><h2>Music library</h2></div><span id="trackCount">0 tracks</span></div><div id="tracks" class="track-list"><p class="empty">Your music library is ready. The administrator can add songs in Admin.</p></div></section>
+<section id="shows" class="panel" hidden><div class="section-head"><div><p class="eyebrow">LISTEN AGAIN</p><h2>Recorded programmes</h2></div></div><div id="showsList" class="track-list"><p class="empty">Recorded programmes will appear here when added by the administrator.</p></div></section>
+<section id="admin" class="panel" hidden><p class="eyebrow">OWNER CONTROL</p><h2>Administrator</h2><p class="note">This starter version stores audio on this device only. It does not yet provide secure multi-device accounts or cloud uploads.</p>
+<div id="login"><label>Admin PIN <input id="pin" type="password" inputmode="numeric" placeholder="Enter PIN"></label><button id="loginBtn">Unlock admin</button><p class="hint">Starter PIN: 2468 (change before sharing).</p></div>
+<div id="adminTools" hidden><label>Add music (up to 15 songs)<input id="musicFiles" type="file" accept="audio/*" multiple></label><label>Add recorded programme<input id="showFile" type="file" accept="audio/*"></label><button id="lockBtn" class="outline">Lock admin</button><p id="adminStatus" class="hint"></p></div>
+</section>
+</main>
+<footer><div class="player"><div><strong id="nowTitle">Nothing playing</strong><small id="nowSub">Alasoye Global Radio</small></div><audio id="audio" controls preload="metadata"></audio></div><p>© <span id="year"></span> Alasoye Global Radio</p></footer>
+<script src="app.js"></script>
+</body></html>
