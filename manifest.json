@@ -1,1 +1,25 @@
-{"name":"Alasoye Global Radio","short_name":"Alasoye Radio","start_url":"./","display":"standalone","background_color":"#090909","theme_color":"#090909","description":"Music and recorded radio programmes from Alasoye Global Radio","icons":[]}
+}{
+  "name": "Alasoye Global Radio",
+  "short_name": "AGR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#090909",
+  "theme_color": "#4b0082",
+  "description": "Alasoye Global Radio - Listen, Enjoy, Be Informed",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
