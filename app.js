@@ -50,8 +50,8 @@ async function loadCloudMusic() {
 
     songs.forEach(song => {
       const fileUrl =
-        `${SUPABASE_URL}/storage/v1/object/public/radio-audio/` +
-        encodeURIComponent(song.file_path);
+  `${SUPABASE_URL}/storage/v1/object/public/radio-audio/` +
+  song.file_path.split("/").map(encodeURIComponent).join("/");
 
       music.push({
         name: `${song.artist || ""} - ${song.title}`.trim(),
