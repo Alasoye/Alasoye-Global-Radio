@@ -1,5 +1,4 @@
 
-
 const $ = s => document.querySelector(s);
 
 let music = [];
@@ -56,7 +55,7 @@ function render() {
         try {
           await audio.play();
         } catch (error) {
-          console.error("Playback error:", error);
+          console.error(error);
         }
       };
 
@@ -101,7 +100,7 @@ async function loadCloudMusic() {
   } catch (error) {
     console.error(error);
     $("#adminStatus").textContent =
-      "Could not load songs. Check your internet connection.";
+      "Library error: " + error.message;
   }
 }
 
@@ -110,11 +109,6 @@ function updateAdminView(session) {
 
   $("#login").hidden = loggedIn;
   $("#adminTools").hidden = !loggedIn;
-
-  if (loggedIn) {
-    $("#loginStatus").textContent = "";
-    $("#adminStatus").textContent = "Administrator signed in.";
-  }
 }
 
 $("#loginBtn").onclick = async () => {
@@ -123,7 +117,7 @@ $("#loginBtn").onclick = async () => {
 
   if (!email || !password) {
     $("#loginStatus").textContent =
-      "Enter your email address and password.";
+      "Enter your email and password.";
     return;
   }
 
@@ -143,7 +137,7 @@ $("#loginBtn").onclick = async () => {
 
   } catch (error) {
     $("#loginStatus").textContent =
-      error.message || "Sign-in failed. Please try again.";
+      "Login error: " + error.message;
   } finally {
     $("#loginBtn").disabled = false;
   }
@@ -160,14 +154,14 @@ $("#lockBtn").onclick = async () => {
   updateAdminView(null);
   $("#adminEmail").value = "";
   $("#adminPassword").value = "";
-  $("#loginStatus").textContent = "You have signed out.";
 };
 
 $("#uploadBtn").onclick = async () => {
   const files = [...$("#musicFiles").files];
 
   if (!files.length) {
-    $("#adminStatus").textContent = "Choose songs to upload first.";
+    $("#adminStatus").textContent =
+      "Please choose a song first.";
     return;
   }
 
@@ -175,7 +169,7 @@ $("#uploadBtn").onclick = async () => {
 
   if (remaining === 0) {
     $("#adminStatus").textContent =
-      "Your 15-song library limit has been reached.";
+      "Your 15-song limit has been reached.";
     return;
   }
 
@@ -187,12 +181,12 @@ $("#uploadBtn").onclick = async () => {
   let failed = 0;
 
   for (const file of selected) {
-    $("#adminStatus").textContent =
-      `Uploading ${uploaded + failed + 1} of ${selected.length}: ${file.name}`;
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const filePath = `${Date.now()}-${safeName}`;
 
     try {
-      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-      const filePath = `${Date.now()}-${safeName}`;
+      $("#adminStatus").textContent =
+        `Uploading ${file.name}...`;
 
       const { error: uploadError } = await db.storage
         .from("radio-audio")
@@ -201,7 +195,9 @@ $("#uploadBtn").onclick = async () => {
           upsert: false
         });
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        throw new Error("Storage upload: " + uploadError.message);
+      }
 
       const title = file.name.replace(/\.[^.]+$/, "");
 
@@ -213,13 +209,18 @@ $("#uploadBtn").onclick = async () => {
           file_path: filePath
         });
 
-      if (insertError) throw insertError;
+      if (insertError) {
+        throw new Error("Database save: " + insertError.message);
+      }
 
       uploaded++;
 
     } catch (error) {
       console.error(error);
       failed++;
+
+      $("#adminStatus").textContent =
+        "UPLOAD ERROR: " + error.message;
     }
   }
 
@@ -228,7 +229,8 @@ $("#uploadBtn").onclick = async () => {
   await loadCloudMusic();
 
   $("#adminStatus").textContent =
-    `${uploaded} song(s) uploaded successfully. ${failed} failed.`;
+    `${uploaded} uploaded successfully. ${failed} failed. ` +
+    (failed ? "Please check the upload error in the browser console." : "");
 
   $("#uploadBtn").disabled = false;
 };
