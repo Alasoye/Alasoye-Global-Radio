@@ -1,4 +1,4 @@
-const CACHE = "alasoye-radio-v2";
+const CACHE = "alasoye-radio-v3";
 
 const FILES = [
   "./",
